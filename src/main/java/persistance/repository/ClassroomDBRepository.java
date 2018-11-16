@@ -1,5 +1,6 @@
 package persistance.repository;
 
+import static javax.transaction.Transactional.TxType.REQUIRED;
 import static javax.transaction.Transactional.TxType.SUPPORTS;
 
 import javax.enterprise.inject.Default;
@@ -21,17 +22,19 @@ public class ClassroomDBRepository implements ClassroomRepository{
 	
 	@Inject
 	JSONUtil JSONUtil;
+	
 	public Classroom findClassroom(int classroomID) {
 		TypedQuery<Classroom> query = em.createQuery("SELECT c FROM Classroom c WHERE c.classroomID='" + classroomID + "'", Classroom.class);
 		return query.getSingleResult();
 	}
-
+	
+	@Transactional(REQUIRED)
 	public String createClassroom(Classroom newClassroom) {
 		em.persist(newClassroom);
 		return JSONUtil.getJSONForObject(em.find(Classroom.class,newClassroom.getClassroomID()));
 	
 	}
-
+	@Transactional(REQUIRED)
 	public boolean updateClassroom(Classroom updateClassroom, int classroomIdToChange) {
 		Classroom oldClassroom = em.find(Classroom.class, classroomIdToChange);
 		oldClassroom.setTrainer((updateClassroom.getTrainer()));
@@ -40,12 +43,13 @@ public class ClassroomDBRepository implements ClassroomRepository{
 		return em.find(Classroom.class,oldClassroom.getClassroomID())!= null ? true : false;
 	
 	}
-
+	@Transactional(REQUIRED)
 	public boolean deleteClassroom(int classroomID) {
-		em.remove(em.find(Classroom.class, classroomID));
-		return em.find(Classroom.class,em.contains(em.find(Classroom.class, classroomID)))== null ? true : false;
+		Classroom toDelete = em.find(Classroom.class, classroomID);
+		em.remove(toDelete);
+		return true;
 	}
-
+	
 	public String getAllClassrooms() {
 		TypedQuery<Classroom> query = em.createQuery("SELECT c FROM Classroom c", Classroom.class);
 		return JSONUtil.getJSONForObject(query.getResultList());
