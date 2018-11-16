@@ -3,12 +3,9 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.qa.classroom</groupId>
-  <artifactId>september.classroom</artifactId>
+  <artifactId>classroom</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <packaging>jar</packaging>
-
-  <name>september.classroom</name>
-  <url>http://maven.apache.org</url>
+  <packaging>war</packaging>
 
 	<properties>
 

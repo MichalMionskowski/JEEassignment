@@ -2,15 +2,26 @@ package persistance.domain;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Classroom {
 
+	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int classroomID;
+	@Column(length=100)
+	private String trainer;
+	@OneToMany(cascade=CascadeType.ALL , fetch = FetchType.EAGER)
+	@Column(length=50)
+	private List<Trainee> trainees;
+	
 	public Classroom() {
 		
 	}
@@ -21,8 +32,7 @@ public class Classroom {
 		this.trainees = trainees;
 	}
 
-	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int classroomID;
+
 	public int getClassroomID() {
 		return this.classroomID;
 	}
@@ -31,8 +41,7 @@ public class Classroom {
 		this.classroomID = classroomID;
 	}
 	
-	@Column(length=100)
-	private String trainer;
+
 	public String getTrainer() {
 		return this.trainer;
 	}
@@ -41,8 +50,7 @@ public class Classroom {
 		this.trainer = trainer;
 	}
 	
-	@Column(length=50)
-	private List<Trainee> trainees;
+
 	public List<Trainee> getTrainees() {
 		return this.trainees;
 	}

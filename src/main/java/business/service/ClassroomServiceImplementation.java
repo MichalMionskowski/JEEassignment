@@ -15,16 +15,13 @@ public class ClassroomServiceImplementation implements ClassroomService{
 	JSONUtil JSONUtil;
 	
 	public Classroom findClassroom(int classroomID) {
-		return repo.findClassroom(classroomID);
+		return (Classroom) (repo.findClassroom(classroomID) != null ?  repo.findClassroom(classroomID): "{\"message\":\"does not exist\"}") ;
 	}
 
 	public String createClassroom(String jsonString) {
 		Classroom newClassroom = JSONUtil.getObjectForJSON(jsonString, Classroom.class);
-		if(repo.findClassroom(newClassroom.getClassroomID())!=null) {
-			return  repo.createClassroom(newClassroom)  ;	
-		}else {
-			return "{\"message\":\"This classroom already exists\"}" ;
-		}
+		return  repo.createClassroom(newClassroom) ;	
+	
 	}
 
 	public boolean updateClassroom(String updateClassroom, int classroomIdToChange) {
